@@ -2,7 +2,6 @@ package screenplay_pattern.interactions;
 
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
-import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 import net.serenitybdd.screenplay.rest.interactions.Post;
 import net.serenitybdd.screenplay.rest.questions.LastResponse;
 
@@ -11,8 +10,10 @@ import java.util.Map;
 
 public class PublicarKudo implements Interaction {
 
-    private static final String PRODUCER_BASE_URL = "http://localhost:8082";
     private static final String PRODUCER_PATH = "/api/v1/kudos";
+    private static final String CLAVE_RECEPTOR = "receptor";
+    private static final String CLAVE_CATEGORIA = "categoria";
+    private static final String CLAVE_MENSAJE = "mensaje";
 
     private final String from;
     private final Map<String, String> row;
@@ -34,11 +35,10 @@ public class PublicarKudo implements Interaction {
     public <T extends Actor> void performAs(T actor) {
         Map<String, String> body = new HashMap<>();
         body.put("from", from);
-        body.put("to", row.get("receptor"));
-        body.put("category", row.get("categoria"));
-        body.put("message", row.get("mensaje"));
+        body.put("to", row.get(CLAVE_RECEPTOR));
+        body.put("category", row.get(CLAVE_CATEGORIA));
+        body.put("message", row.get(CLAVE_MENSAJE));
 
-        actor.can(CallAnApi.at(PRODUCER_BASE_URL));
         actor.attemptsTo(
                 Post.to(PRODUCER_PATH)
                         .with(request -> request

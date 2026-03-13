@@ -24,7 +24,7 @@ public class VisualizarListadoDeKudos implements Task {
     @Override
     @Step("{0} navega al listado de Kudos y espera que la tabla cargue")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(Open.url(KudosListPage.URL));
+        actor.attemptsTo(Open.url(KudosListPage.urlDelListado()));
         new WebDriverWait(BrowseTheWeb.as(actor).getDriver(), ESPERA)
                 .until(driver -> !driver.findElements(By.cssSelector("tbody tr")).isEmpty());
     }
