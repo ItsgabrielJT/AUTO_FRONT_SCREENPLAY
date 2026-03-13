@@ -20,8 +20,7 @@ public class RegistrosSembradosVisibles implements Question<Long> {
     @Override
     public Long answeredBy(Actor actor) {
         return KudosListPage.FILAS_TABLA.resolveAllFor(actor).stream()
-                .filter(fila -> contexto.mensajesUnicos.values().stream()
-                        .anyMatch(unico -> fila.getText().contains(unico)))
+            .filter(fila -> contexto.contieneMensajeSembradoEn(fila.getText()))
                 .count();
     }
 }

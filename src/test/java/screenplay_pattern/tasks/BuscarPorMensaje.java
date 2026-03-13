@@ -24,8 +24,8 @@ public class BuscarPorMensaje implements Task {
     @Override
     @Step("{0} escribe en el buscador de kudos")
     public <T extends Actor> void performAs(T actor) {
-        String mensajeUnico = contexto.mensajesUnicos.getOrDefault(mensajeBase, mensajeBase);
-        contexto.mensajeBuscado = mensajeUnico;
+        String mensajeUnico = contexto.mensajeUnicoPara(mensajeBase);
+        contexto.setMensajeBuscado(mensajeUnico);
         actor.attemptsTo(EstablecerValorInput.en(KudosListPage.CAMPO_BUSQUEDA_MENSAJE, mensajeUnico));
     }
 }

@@ -32,8 +32,7 @@ public class EmisorEnFilasSembradas implements Question<Boolean> {
         long validadas = 0;
         for (int i = 0; i < filas.size(); i++) {
             String textoFila = filas.get(i).getText();
-            boolean esFilaSembrada = contexto.mensajesUnicos.values().stream()
-                    .anyMatch(textoFila::contains);
+            boolean esFilaSembrada = contexto.contieneMensajeSembradoEn(textoFila);
             if (!esFilaSembrada) continue;
 
             String textoEmisor = emisores.get(i).getText();
@@ -41,6 +40,6 @@ public class EmisorEnFilasSembradas implements Question<Boolean> {
             validadas++;
         }
 
-        return validadas == contexto.cantidadSembrada;
+        return validadas == contexto.getCantidadSembrada();
     }
 }

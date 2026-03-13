@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 
 public class ListarKudosStepDefinition {
 
-        private final KudosContexto contexto = new KudosContexto();
+    private final KudosContexto contexto = new KudosContexto();
 
     @Before
     public void prepararEscenario() {
@@ -51,13 +51,13 @@ public class ListarKudosStepDefinition {
         elEmpleado().should(
                 seeThat("registros sembrados visibles en la tabla",
                         RegistrosSembradosVisibles.enLaTabla(contexto),
-                        equalTo((long) contexto.cantidadSembrada))
+                        equalTo((long) contexto.getCantidadSembrada()))
         );
     }
 
     @Y("el contador {string} debe reflejar la cantidad de registros insertados")
     public void elContadorDebeReflejarLaCantidadDeRegistrosInsertados(String campo) {
-        long minEsperado = contexto.totalElementsAntesDeSeed + contexto.cantidadSembrada;
+        long minEsperado = contexto.getTotalElementsAntesDeSeed() + contexto.getCantidadSembrada();
         elEmpleado().should(
                 seeThat("totalElements en el sistema",
                         TotalElementosActual.enElSistema(),
@@ -94,15 +94,15 @@ public class ListarKudosStepDefinition {
     @Entonces("el listado debe mostrar los resultados que coincidan con la categoría {string}")
     public void elListadoDebeMostrarLosResultadosQueCoincidanConLaCategoria(String categoria) {
         elEmpleado().should(
-                seeThat("categorías visibles en la tabla",
-                        CategoriasVisibles.enLaTabla(),
-                        everyItem(equalToIgnoringCase(categoria)))
+            seeThat("resultados filtrados consistentes con el contexto",
+                ResultadosFiltradosCoincidenConContexto.enLaTabla(contexto),
+                is(true))
         );
     }
 
     @Y("el mensaje de los registros visibles debe ser {string}")
     public void elMensajeDeLosRegistrosVisiblesDebeSer(String mensaje) {
-        String mensajeUnico = contexto.mensajesUnicos.getOrDefault(mensaje, mensaje);
+        String mensajeUnico = contexto.mensajeUnicoPara(mensaje);
         elEmpleado().should(
                 seeThat("mensajes visibles en la tabla",
                         MensajesVisibles.enLaTabla(),

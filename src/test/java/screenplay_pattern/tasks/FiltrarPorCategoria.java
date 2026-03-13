@@ -24,7 +24,7 @@ public class FiltrarPorCategoria implements Task {
     @Override
     @Step("{0} filtra el listado por la categoría '#categoria'")
     public <T extends Actor> void performAs(T actor) {
-        contexto.categoriaSeleccionada = categoria;
+        contexto.setCategoriaSeleccionada(categoria);
         actor.attemptsTo(EstablecerValorSelect.en(KudosListPage.FILTRO_CATEGORIA, categoria));
     }
 }
