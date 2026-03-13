@@ -152,5 +152,5 @@ Verifica que el frontend este disponible en la URL del ambiente configurado.
 Puedes sobreescribir la configuracion headless por linea de comandos:
 
 ```bash
-./gradlew clean test aggregate -Dheadless.chrome=false
+./gradlew clean test aggregate -Dheadless.mode=false
 ```

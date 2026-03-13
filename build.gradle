@@ -53,6 +53,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    systemProperties System.properties
 }
 
 gradle.startParameter.continueOnFailure = true
