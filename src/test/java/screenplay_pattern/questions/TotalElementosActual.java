@@ -1,8 +1,10 @@
 package screenplay_pattern.questions;
 
-import net.serenitybdd.rest.SerenityRest;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Question;
+import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
+import net.serenitybdd.screenplay.rest.interactions.Get;
+import net.serenitybdd.screenplay.rest.questions.LastResponse;
 
 public class TotalElementosActual implements Question<Long> {
 
@@ -17,9 +19,8 @@ public class TotalElementosActual implements Question<Long> {
 
     @Override
     public Long answeredBy(Actor actor) {
-        SerenityRest.given()
-                .baseUri(CONSUMER_BASE_URL)
-                .get(CONSUMER_PATH);
-        return SerenityRest.lastResponse().jsonPath().getLong("totalElements");
+        actor.can(CallAnApi.at(CONSUMER_BASE_URL));
+        actor.attemptsTo(Get.resource(CONSUMER_PATH));
+        return actor.asksFor(LastResponse.received()).jsonPath().getLong("totalElements");
     }
 }

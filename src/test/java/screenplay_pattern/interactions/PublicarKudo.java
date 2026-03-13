@@ -1,8 +1,10 @@
 package screenplay_pattern.interactions;
 
-import net.serenitybdd.rest.SerenityRest;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
+import net.serenitybdd.screenplay.rest.interactions.Post;
+import net.serenitybdd.screenplay.rest.questions.LastResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,16 +38,18 @@ public class PublicarKudo implements Interaction {
         body.put("category", row.get("categoria"));
         body.put("message", row.get("mensaje"));
 
-        SerenityRest.given()
-            .baseUri(PRODUCER_BASE_URL)
-            .contentType("application/json")
-            .body(body)
-            .post(PRODUCER_PATH);
+        actor.can(CallAnApi.at(PRODUCER_BASE_URL));
+        actor.attemptsTo(
+                Post.to(PRODUCER_PATH)
+                        .with(request -> request
+                                .contentType("application/json")
+                                .body(body))
+        );
 
-        int statusCode = SerenityRest.lastResponse().statusCode();
+        int statusCode = actor.asksFor(LastResponse.received()).statusCode();
         if (statusCode != 202) {
             throw new RuntimeException(
-                    "Seeder fallo. HTTP " + statusCode + " -> " + SerenityRest.lastResponse().asString());
+                    "Seeder fallo. HTTP " + statusCode + " -> " + actor.asksFor(LastResponse.received()).asString());
         }
     }
 }
